@@ -1,0 +1,51 @@
+<!DOCTYPE html  >
+<html   xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+         layout:decorate="layout">
+<head>
+  <meta charset="UTF-8">
+  <title>Produits</title>
+</head>
+<body>
+<div layout:fragment="content1">
+  <div class="container">
+    <div class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+      <a class="navbar-brand  " >Liste des Produits</a>
+    </div>
+    <div class="navbar justify-content-center">
+      <form th:action="@{/user/index}" method="get">
+        <label>Mot clé:</label>
+        <input type="text" name="motcle" th:value="${motcle}">
+        <button type="submit" class="btn btn-primary">Chercher</button>
+      </form>
+
+    </div>
+
+    <table class="table ">
+      <tr>
+        <th>ID</th><th>DESIGNATION</th><th>PRIX</th><th>QTS</th>
+      </tr>
+      <tr th:each="p:${listProduits}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.designation}"></td>
+        <td th:text="${p.prix}"></td>
+        <td th:text="${p.quantite}"></td>
+        <td>
+          <a class="btn btn-danger" onclick="return confirm('Etes vous Sure?')" th:href="@{/admin/delete(id=${p.id},page=${currentpage},motcle=${motcle})}">Delete</a>
+        </td>
+        <td>
+          <a class="btn btn-success"  th:href="@{/admin/edit(id=${p.id})}">Edit</a>
+        </td>
+
+      </tr>
+    </table>
+    <ul class="nav nav-pills justify-content-center">
+      <li th:class="${currentpage==status.index}?'active':''" th:each="page,status:${pages}">
+        <a class="nav-link " th:href="@{/user/index(page=${status.index},motcle=${motcle})}" th:text="${status.index}"></a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>
